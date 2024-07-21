@@ -1,43 +1,41 @@
 import { Component } from "react";
 
+const arrColors = ['red', 'yellow', 'green']
+
 export class ClassTrafficLight extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentState: 'red'
+      currentColor: 'red'
     };
   }
 
-  handleNextState = () => {
-    const { currentState } = this.state;
-    let nextState;
-    switch (currentState) {
-      case 'red':
-        nextState = 'yellow';
-        break;
-      case 'yellow':
-        nextState = 'green';
-        break;
-      case 'green':
-        nextState = 'red'
-    }
-    this.setState({ currentState: nextState });
+  handleNextColor = () => {
+    const { currentColor } = this.state;
+    const currentIndex = arrColors.indexOf(currentColor);
+    const nextIndex = (currentIndex - 1 + arrColors.length) % arrColors.length;
+    this.setState({ currentColor: arrColors[nextIndex] });
   };
 
 
   render() {
-    const { currentState } = this.state;
+    const { currentColor } = this.state;
 
     return (
       <div className="traffic-light-box">
         <h2>Class Traffic Light</h2>
         <div className="traffic-light">
-          <div className={`circle ${currentState === 'red' ? 'red' : 'black'}`}></div>
-          <div className={`circle ${currentState === 'yellow' ? 'yellow' : 'black'}`}></div>
-          <div className={`circle ${currentState === 'green' ? 'green' : 'black'}`}></div>
+          {arrColors.map(color => (
+            <div
+              key={color}
+              className={`circle ${currentColor === color ? color : 'black'}`}
+            ></div>
+          ))}
         </div>
-        <button className="next-state-button" onClick={this.handleNextState}>Next State</button>
+        <button className="next-state-button" onClick={this.handleNextColor}>
+          Next State
+        </button>
       </div>
-    )
+    );
   }
 }
